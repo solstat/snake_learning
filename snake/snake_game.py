@@ -1,6 +1,6 @@
 """
 
-Single Player Game class
+Snake Game Implementation for deep reinforcement learning
 
 """
 
@@ -10,6 +10,7 @@ from deep_rf import SinglePlayerGame
 _SNAKE_ACTION_LIST = ['UP', 'DOWN', 'LEFT', 'RIGHT']
 
 class SnakeGame(SinglePlayerGame):
+    """ Implementation of Snake as a SinglePlayerGame """
     def __init__(self, board_height=20, board_width=20):
         SinglePlayerGame.__init__(self, action_list=_SNAKE_ACTION_LIST,
                                   frame_height = board_height,
@@ -157,16 +158,19 @@ class SnakeGame(SinglePlayerGame):
 
 
 class Snake(object):
-    """
-        Args:
-            initial_location (dictionary {'x': int, 'y': int})
-        Attributes:
-            body (list of dictionaries {'x': int, 'y': int})
-            direction (int from action_dict)
-        Methods:
-            move - move body in direction
-            grow - append point to end of body
-            is_self_collision - check if snake has collided with itself
+    """ Class that handles the location, size, and direction of the snake
+
+    Snake extended description
+
+    Parameters
+    ----------
+        initial_location : dict {'x': int, 'y': int}
+            initial location of snake
+
+    Attributes
+    ----------
+        body : list of dict
+            list of dictionaries {'x': int, 'y': int})
     """
     def __init__(self, initial_location):
         self.body = [initial_location]
@@ -175,6 +179,9 @@ class Snake(object):
 
     @property
     def direction(self):
+        """ direction : {'UP', 'DOWN', 'LEFT', 'RIGHT'}
+                direction of Snake
+        """
         return self._direction
 
     @direction.setter
@@ -183,6 +190,7 @@ class Snake(object):
         self._direction = value
 
     def move(self):
+        """ Move the snake one step in its current direction """
         head = self.body[0].copy()  # deep copy
         if self._direction == 'UP':
             head['y'] = head['y'] + 1
@@ -197,10 +205,24 @@ class Snake(object):
         self.body.pop()
 
     def grow(self):
+        """ Increase the length of the snake
+
+        Appends a pixel to the end of the snake's current body
+
+        Parameters
+        ----------
+            None
+
+        Returns
+        -------
+            None
+
+        """
         tail = self.body[-1]
         self.body.append(tail)
 
     def is_self_collision(self):
+        """ Checks if the snake's head intersects its body """
         head = self.body[0]
         if self.body.count(head) > 1:
             return True
